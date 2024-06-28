@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -10,38 +11,59 @@ import {
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { buttonStule } from "./TodoContainer";
+import { buttonStyle } from "./TodoContainer";
+import { FormEvent, useState } from "react";
 
 const AddTodoModal = () => {
+  const [task, setTask] = useState("");
+  const [description, setdescription] = useState("");
+
+  const onSubmitData = (e: FormEvent) => {
+    e.preventDefault();
+    console.log({ task, description });
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className={buttonStule}>Add Todo</button>
+        <Button className={buttonStyle}>Add Todo</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent onSubmit={onSubmitData} className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Add todo</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Add your tasks that you want to finish.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <form className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+            <Label htmlFor="task" className="text-right">
+              Task
             </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+            <Input
+              onBlur={(e) => setTask(e.target.value)}
+              id="task"
+              placeholder="Task"
+              className="col-span-3"
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+            <Label htmlFor="description" className="text-right">
+              Description
             </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
+            <Input
+              onBlur={(e) => setdescription(e.target.value)}
+              id="description"
+              placeholder="Description"
+              className="col-span-3"
+            />
           </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="submit">Save changes</Button>
+            </DialogClose>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
