@@ -5,6 +5,7 @@ type TTodo = {
   title: string;
   description: string;
   isCompleted?: boolean;
+  priority: string;
 };
 
 type TInitialState = {
@@ -40,6 +41,12 @@ const todoSlice = createSlice({
       //   return Number(aCompleted) - Number(bCompleted);
       // });
     },
+
+    // filterByPriority: (state, action) => {
+    //   state.todos = state.todos.filter(
+    //     (item) => item.priority === action.payload
+    //   );
+    // },
   },
 });
 

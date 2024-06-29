@@ -10,9 +10,16 @@ import {
 } from "../ui/dropdown-menu";
 import { buttonStyle } from "./TodoContainer";
 import { Button } from "../ui/button";
+// import { useAppDispatch } from "@/redux/hookes";
+// import { filterByPriority } from "@/redux/features/todoSlice";
 
 const TodoFilter = () => {
+  // const dispatch = useAppDispatch();
   const [position, setPosition] = useState("high");
+  // useEffect(() => {
+  //   dispatch(filterByPriority(position));
+  // }, [position]);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

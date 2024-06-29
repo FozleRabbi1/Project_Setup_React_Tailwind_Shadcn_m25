@@ -12,7 +12,7 @@ const TodoContainer = () => {
   // const tasks = useAppSelector((state) => state.todos.todos);
 
   // from server
-  const { data: todos, isError, isLoading } = useGetTodosQuery(undefined);
+  const { data: todos, isLoading } = useGetTodosQuery(undefined);
   console.log(todos);
   return (
     <Container>

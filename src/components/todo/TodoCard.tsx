@@ -7,9 +7,16 @@ type TTodoCardProps = {
   title: string;
   description: string;
   isCompleted?: boolean;
+  priority: string;
 };
 
-const TodoCard = ({ id, title, description, isCompleted }: TTodoCardProps) => {
+const TodoCard = ({
+  id,
+  title,
+  description,
+  isCompleted,
+  priority,
+}: TTodoCardProps) => {
   const dispatch = useAppDispatch();
 
   const handleComplete = () => {
@@ -19,17 +26,31 @@ const TodoCard = ({ id, title, description, isCompleted }: TTodoCardProps) => {
   return (
     <div className="bg-white opacity-80 p-2 flex justify-between items-center rounded-xl border ">
       <input
+        className="mr-3 cursor-pointer"
         onClick={handleComplete}
         type="checkbox"
         name="complete"
         id="complete"
       />
-      <p className="font-semibold">{title}</p>
-      {/* <p>time</p> */}
-      <p className={`${isCompleted ? "text-green-500" : "text-red-500"}`}>
+      <p className="font-semibold flex-1">{title}</p>
+      <div className="flex-1 flex items-center space-x-2">
+        <div
+          className={`${
+            priority === "low"
+              ? "bg-yellow-500"
+              : priority === "medium"
+              ? "bg-green-500"
+              : "bg-red-500"
+          } size-2.5 rounded-full`}
+        ></div>
+        <p className="">{priority}</p>
+      </div>
+      <p
+        className={`flex-1 ${isCompleted ? "text-green-500" : "text-red-500"}`}
+      >
         {isCompleted ? "Done" : "Pending"}
       </p>
-      <p>{description}</p>
+      <p className="flex-[2]">{description}</p>
       <div className="space-x-5">
         <Button
           onClick={() => dispatch(removeTodo(id))}
