@@ -1,9 +1,9 @@
-import { useAppDispatch } from "@/redux/hookes";
+import { useDeleteTodoMutation } from "@/redux/api/api";
 import { Button } from "../ui/button";
-import { removeTodo, toggleCompleted } from "@/redux/features/todoSlice";
+// import { removeTodo, toggleCompleted } from "@/redux/features/todoSlice";
 
 type TTodoCardProps = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   isCompleted?: boolean;
@@ -11,23 +11,26 @@ type TTodoCardProps = {
 };
 
 const TodoCard = ({
-  id,
+  _id,
   title,
   description,
   isCompleted,
   priority,
 }: TTodoCardProps) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+  const [deleteTodo, { isLoading }] = useDeleteTodoMutation();
 
-  const handleComplete = () => {
-    dispatch(toggleCompleted(id));
+  if (isLoading) {
+    return <p className="text-3xl font-semibold">Loading...</p>;
+  }
+  const deleteTodoHandlear = (id: string) => {
+    deleteTodo(id);
   };
 
   return (
     <div className="bg-white opacity-80 p-2 flex justify-between items-center rounded-xl border ">
       <input
         className="mr-3 cursor-pointer"
-        onClick={handleComplete}
         type="checkbox"
         name="complete"
         id="complete"
@@ -53,7 +56,7 @@ const TodoCard = ({
       <p className="flex-[2]">{description}</p>
       <div className="space-x-5">
         <Button
-          onClick={() => dispatch(removeTodo(id))}
+          onClick={() => deleteTodoHandlear(_id)}
           className="bg-red-500 hover:bg-red-700"
         >
           {" "}

@@ -8,33 +8,51 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { buttonStyle } from "./TodoContainer";
 import { FormEvent, useState } from "react";
-import { useAppDispatch } from "@/redux/hookes";
-import { addTodo } from "@/redux/features/todoSlice";
+import { useAddTodoMutation } from "@/redux/api/api";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+// import { useAppDispatch } from "@/redux/hookes";
+// import { addTodo } from "@/redux/features/todoSlice";
 
 const AddTodoModal = () => {
-  const [position, setPosition] = useState("high");
+  const [priority, setPriority] = useState("high");
   const [task, setTask] = useState("");
   const [description, setdescription] = useState("");
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+  const [addTodo, { data, isError, isLoading }] = useAddTodoMutation();
 
   const onSubmitData = (e: FormEvent) => {
     e.preventDefault();
-    const id = Math.random().toString(36).substring(2);
-    const taskDetails = { id, title: task, description, priority: position };
-    dispatch(addTodo(taskDetails));
+    // const id = Math.random().toString(36).substring(2);
+    const date = new Date();
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+    const taskDetails = {
+      title: task,
+      description,
+      priority,
+      isCompleted: false,
+      dateTime: formattedDate,
+    };
+    addTodo(taskDetails);
+
+    // dispatch(addTodo(taskDetails));
   };
 
   return (
@@ -76,26 +94,16 @@ const AddTodoModal = () => {
             <Label htmlFor="Priodity" className="text-right">
               Priodity
             </Label>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button> {position} </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-35">
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                  value={position}
-                  onValueChange={setPosition}
-                >
-                  <DropdownMenuRadioItem value="high">
-                    High
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="medium">
-                    Mediul
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="low">Low</DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Select onValueChange={(value) => setPriority(value)}>
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder={priority} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="high">High</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="low">Low</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <DialogFooter>

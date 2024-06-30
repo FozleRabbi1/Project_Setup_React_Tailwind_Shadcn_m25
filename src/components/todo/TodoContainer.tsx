@@ -12,8 +12,7 @@ const TodoContainer = () => {
   // const tasks = useAppSelector((state) => state.todos.todos);
 
   // from server
-  const { data: todos, isLoading } = useGetTodosQuery(undefined);
-  console.log(todos);
+  const { data: todos, isLoading } = useGetTodosQuery(undefined, {refetchOnMountOrArgChange : 100});
   return (
     <Container>
       <h2 className="text-2xl font-semibold text-center py-5">My Todo</h2>
