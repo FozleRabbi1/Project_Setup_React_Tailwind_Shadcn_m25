@@ -1,4 +1,7 @@
-import { useDeleteTodoMutation } from "@/redux/api/api";
+import {
+  useDeleteTodoMutation,
+  useIsCompletedToggleMutation,
+} from "@/redux/api/api";
 import { Button } from "../ui/button";
 // import { removeTodo, toggleCompleted } from "@/redux/features/todoSlice";
 
@@ -19,6 +22,7 @@ const TodoCard = ({
 }: TTodoCardProps) => {
   // const dispatch = useAppDispatch();
   const [deleteTodo, { isLoading }] = useDeleteTodoMutation();
+  const [isCompletedToggle] = useIsCompletedToggleMutation();
 
   if (isLoading) {
     return <p className="text-3xl font-semibold">Loading...</p>;
@@ -27,13 +31,26 @@ const TodoCard = ({
     deleteTodo(id);
   };
 
+  const isCompletedToggleFun = (id: string) => {
+    const data = {
+      title,
+      description,
+      priority,
+      isCompleted: !isCompleted,
+    };
+    const options = { id, data };
+    isCompletedToggle(options);
+  };
+
   return (
     <div className="bg-white opacity-80 p-2 flex justify-between items-center rounded-xl border ">
       <input
+        onClick={() => isCompletedToggleFun(_id)}
         className="mr-3 cursor-pointer"
         type="checkbox"
         name="complete"
         id="complete"
+        defaultChecked={isCompleted}
       />
       <p className="font-semibold flex-1">{title}</p>
       <div className="flex-1 flex items-center space-x-2">

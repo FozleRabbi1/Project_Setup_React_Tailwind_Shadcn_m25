@@ -29,7 +29,14 @@ const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setdescription] = useState("");
   // const dispatch = useAppDispatch();
-  const [addTodo, { data, isError, isLoading }] = useAddTodoMutation();
+  const [addTodo, { isError, isLoading }] = useAddTodoMutation();
+
+  if (isError) {
+    console.log(isError);
+  }
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   const onSubmitData = (e: FormEvent) => {
     e.preventDefault();

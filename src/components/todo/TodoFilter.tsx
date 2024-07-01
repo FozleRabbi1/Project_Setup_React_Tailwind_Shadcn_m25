@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +12,9 @@ import { Button } from "../ui/button";
 // import { useAppDispatch } from "@/redux/hookes";
 // import { filterByPriority } from "@/redux/features/todoSlice";
 
-const TodoFilter = () => {
+const TodoFilter = ({ filterPosition, setFilterPosition }) => {
   // const dispatch = useAppDispatch();
-  const [position, setPosition] = useState("high");
+
   // useEffect(() => {
   //   dispatch(filterByPriority(position));
   // }, [position]);
@@ -23,12 +22,17 @@ const TodoFilter = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className={buttonStyle}>Filter</Button>
+        <Button className={buttonStyle}>
+          {filterPosition.length === 0 ? "Filter" : filterPosition}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Filter by priority</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+        <DropdownMenuRadioGroup
+          value={filterPosition}
+          onValueChange={setFilterPosition}
+        >
           <DropdownMenuRadioItem value="high">High</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="medium">Mediul</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="low">Low</DropdownMenuRadioItem>

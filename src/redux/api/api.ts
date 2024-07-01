@@ -5,20 +5,46 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
   tagTypes: ["todo"],
   endpoints: (builder) => ({
+    // getTodos: builder.query({
+    //   query: (priority) => ({
+    //     // url: `/tasks?priority=${priority}`,  //===========>>> string হিসেবে send করতে হবে
+    //     url: `/tasks`,
+    //     method: "GET",
+    //     params: { priority }, //===========>>> object হিসেবে send করতে  হবে
+    //   }),
+    //   providesTags: ["todo"],
+    // }),
     getTodos: builder.query({
-      query: () => ({
-        url: "/tasks",
-        method: "GET",
-      }),
+      query: (priority) => {
+        const params = new URLSearchParams();
+        if (priority) {
+          params.append("priority", priority);
+        }
+        return {
+          url: "/tasks",
+          method: "GET",
+          params,
+        };
+      },
       providesTags: ["todo"],
     }),
+
     addTodo: builder.mutation({
       query: (data) => {
-        // console.log(data);
         return {
           url: "/task",
           method: "POST",
           body: data,
+        };
+      },
+      invalidatesTags: ["todo"],
+    }),
+    isCompletedToggle: builder.mutation({
+      query: (options) => {
+        return {
+          url: `/task/${options?.id}`,
+          method: "PUT",
+          body: options?.data,
         };
       },
       invalidatesTags: ["todo"],
@@ -33,5 +59,9 @@ export const baseApi = createApi({
   }),
 });
 
-export const { useGetTodosQuery, useAddTodoMutation, useDeleteTodoMutation } =
-  baseApi;
+export const {
+  useGetTodosQuery,
+  useAddTodoMutation,
+  useDeleteTodoMutation,
+  useIsCompletedToggleMutation,
+} = baseApi;
